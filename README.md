@@ -64,12 +64,6 @@ If you have Docker on your computer you can run this command tu setup your DB
 
 ```
 
-1. Run Migration:
-
-```bash
-   npm run typeorm  migration:run
-```
-
 ## Environment Variables
 
 Create a `.env` file in the root directory of your project to set up environment variables. Add the following variables and replace the placeholders with your database configuration:
@@ -80,6 +74,18 @@ DB_PORT=5432
 DB_USERNAME=tracker
 DB_PASSWORD=admin
 DB_NAME=financial-tracker
+```
+
+2. Export Variables:
+
+```bash
+   direnv allow
+```
+
+2. Run Migration:
+
+```bash
+   npm run typeorm  migration:run
 ```
 
 Make sure to keep your `.env` file private and do not commit it to version control.
