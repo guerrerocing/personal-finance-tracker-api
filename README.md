@@ -50,28 +50,38 @@ Follow these steps to install and set up your API:
    npm install
    ```
 
+## Database Configuration
+
+Ensure your PostgreSQL database is properly set up and configured. You can use tools like [pgAdmin](https://www.pgadmin.org/) to manage your database.
+
+If you have Docker on your computer you can run this command tu setup your DB
+
+````sh
+    docker run --name financial-tracker-postgres --hostname postgres -p 5432:5432 \
+    --volume financial-tracker-postgres:/var/lib/postgresql/data \
+    -e POSTGRES_USER=tracker -e  POSTGRES_PASSWORD=admin -e POSTGRES_DB=financial-tracker \
+    -d postgres:12
+    ```
+
+
+1. Run Migration:
+   ```bash
+   npm run typeorm  migration:run
+````
+
 ## Environment Variables
 
 Create a `.env` file in the root directory of your project to set up environment variables. Add the following variables and replace the placeholders with your database configuration:
 
 ```dotenv
 DB_HOST=your_database_host
-DB_PORT=your_database_port
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
-DB_NAME=your_database_name
+DB_PORT=5432
+DB_USERNAME=tracker
+DB_PASSWORD=admin
+DB_NAME=financial-tracker
 ```
 
 Make sure to keep your `.env` file private and do not commit it to version control.
-
-## Database Configuration
-
-Ensure your PostgreSQL database is properly set up and configured. You can use tools like [pgAdmin](https://www.pgadmin.org/) to manage your database.
-
-1. Run Migration:
-   ```bash
-   npm run typeorm  migration:run
-   ```
 
 ## Usage
 
