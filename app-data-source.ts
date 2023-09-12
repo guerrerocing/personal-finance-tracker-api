@@ -1,4 +1,6 @@
 import { DataSource } from "typeorm";
+import { Transaction } from "./src/entities/transaction.entity";
+import { User } from "./src/entities/user.entity";
 
 export const dataSource = new DataSource({
   type: "mysql",
@@ -8,7 +10,7 @@ export const dataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 
-  entities: ["src/**/**.entity{.ts,.js}"],
+  entities: [User, Transaction],
   migrations: ["src/migrations/**/*{.ts,.js}"],
   logging: true,
   synchronize: true,
