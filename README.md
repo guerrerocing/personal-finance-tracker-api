@@ -75,8 +75,6 @@ Ensure your PostgreSQL database is properly set up and configured. You can use t
 
 ## Usage
 
-Describe how to run and use your API:
-
 1. Start the API:
 
    ```bash
