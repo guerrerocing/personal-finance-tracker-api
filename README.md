@@ -56,18 +56,19 @@ Ensure your PostgreSQL database is properly set up and configured. You can use t
 
 If you have Docker on your computer you can run this command tu setup your DB
 
-````sh
+```sh
     docker run --name financial-tracker-postgres --hostname postgres -p 5432:5432 \
     --volume financial-tracker-postgres:/var/lib/postgresql/data \
     -e POSTGRES_USER=tracker -e  POSTGRES_PASSWORD=admin -e POSTGRES_DB=financial-tracker \
     -d postgres:12
-    ```
 
+```
 
 1. Run Migration:
-   ```bash
+
+```bash
    npm run typeorm  migration:run
-````
+```
 
 ## Environment Variables
 
