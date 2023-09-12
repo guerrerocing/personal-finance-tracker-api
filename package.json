@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node ./src/server",
     "build": "tsc",
-    "start": "node build/server",
+    "start": "node build/src/server",
     "typeorm": "typeorm-ts-node-commonjs -d app-data-source.ts"
   },
   "keywords": [],
@@ -29,6 +29,7 @@
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.4.9",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
