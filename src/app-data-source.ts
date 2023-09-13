@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
-import { Transaction } from "./src/entities/transaction.entity";
-import { User } from "./src/entities/user.entity";
+import { Transaction } from "./entities/transaction.entity";
+import { User } from "./entities/user.entity";
 
 export const dataSource = new DataSource({
   type: "postgres",
@@ -11,7 +11,7 @@ export const dataSource = new DataSource({
   database: process.env.DB_NAME,
 
   entities: [User, Transaction],
-  migrations: ["src/migrations/**/*{.ts,.js}"],
+  migrations: ["./migrations/**/*{.ts,.js}"],
   logging: true,
   synchronize: true,
 });

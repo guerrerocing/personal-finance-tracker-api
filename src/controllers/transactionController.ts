@@ -4,21 +4,20 @@ import { Request, Response } from "express";
 import { Transaction } from "../entities/transaction.entity";
 import { User } from "../entities/user.entity";
 
-import { dataSource } from "../../app-data-source";
+import { dataSource } from "../app-data-source";
 
 // Function to create a new transaction (income or expense)
 export const createTransaction = async (req: Request, res: Response) => {
   try {
     const { description, amount, type } = req.body;
     const userId = res.locals.user.userId;
-    await dataSource.initialize();
+
     const transactionRepository = dataSource.getRepository(Transaction);
     const userRepository = dataSource.getRepository(User);
 
     // Check if the user exists
     const user = await userRepository.findOne({ where: { id: userId } });
     if (!user) {
-      await dataSource.destroy();
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -31,8 +30,6 @@ export const createTransaction = async (req: Request, res: Response) => {
     });
 
     await transactionRepository.save(newTransaction);
-
-    await dataSource.destroy();
 
     return res
       .status(201)
@@ -48,7 +45,6 @@ export const editTransaction = async (req: Request, res: Response) => {
   try {
     const { id, description, amount, type, date } = req.body;
     const userId = res.locals.user.userId;
-    await dataSource.initialize();
 
     const transactionRepository = dataSource.getRepository(Transaction);
 
@@ -59,8 +55,6 @@ export const editTransaction = async (req: Request, res: Response) => {
     });
 
     if (!existingTransaction || existingTransaction.user.id !== userId) {
-      await dataSource.destroy();
-
       return res.status(404).json({ message: "Transaction not found" });
     }
 
@@ -71,7 +65,6 @@ export const editTransaction = async (req: Request, res: Response) => {
     existingTransaction.date = date;
 
     await transactionRepository.save(existingTransaction);
-    await dataSource.destroy();
 
     return res.status(200).json({
       message: "Transaction updated",
@@ -88,7 +81,6 @@ export const listTransactions = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user.userId;
     const { startDate, endDate } = req.query;
-    await dataSource.initialize();
 
     const transactionRepository = dataSource.getRepository(Transaction);
 
@@ -110,8 +102,6 @@ export const listTransactions = async (req: Request, res: Response) => {
       .orderBy("transaction.date", "DESC")
       .getMany();
 
-    await dataSource.destroy();
-
     return res.status(200).json({ transactions });
   } catch (error) {
     console.error(error);
@@ -124,8 +114,6 @@ export const deleteTransaction = async (req: Request, res: Response) => {
   try {
     const userId = res.locals.user.userId;
     const { transactionId } = req.params;
-    console.log(transactionId);
-    await dataSource.initialize();
 
     const transactionRepository = dataSource.getRepository(Transaction);
     const transaction = await transactionRepository.findOne({
@@ -136,13 +124,10 @@ export const deleteTransaction = async (req: Request, res: Response) => {
 
     // Check if the transaction exists and belongs to the user
     if (!transaction) {
-      await dataSource.destroy();
-
       return res.status(404).json({ message: "Transaction not found" });
     }
 
     await transactionRepository.remove(transaction);
-    await dataSource.destroy();
 
     return res.status(200).json({ message: "Transaction deleted" });
   } catch (error) {
@@ -157,7 +142,6 @@ export const calculateFinancialSummary = async (
   res: Response
 ) => {
   try {
-    await dataSource.initialize();
     const userId = res.locals.user.userId;
     const { startDate, endDate } = req.query;
 
@@ -198,7 +182,6 @@ export const calculateFinancialSummary = async (
 
     // Calculate the balance
     const balance = totalIncome - totalExpenses;
-    await dataSource.destroy();
 
     return res.status(200).json({
       totalIncome,

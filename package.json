@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node ./src/server",
     "build": "tsc",
-    "start": "node ./build/src/server",
-    "typeorm": "typeorm-ts-node-commonjs -d app-data-source.ts"
+    "start": "node ./build/server",
+    "typeorm": "typeorm-ts-node-commonjs -d ./src/app-data-source.ts"
   },
   "keywords": [],
   "author": "",

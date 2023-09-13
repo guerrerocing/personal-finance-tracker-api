@@ -3,7 +3,7 @@ import { User } from "../entities/user.entity";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { dataSource } from "../../app-data-source";
+import { dataSource } from "../app-data-source";
 
 const SECRET_KEY = process.env.JWT_SECRET || "your_default_secret_key";
 
@@ -19,8 +19,6 @@ export async function registerUser(
       .status(400)
       .json({ message: "Username and password are required" });
   }
-
-  await dataSource.initialize();
 
   const userRepository = dataSource.getRepository(User);
 
@@ -40,8 +38,6 @@ export async function registerUser(
     password: hashedPassword,
   });
   await userRepository.save(newUser);
-
-  await dataSource.destroy();
 
   // Generate and send JWT token
   const token = jwt.sign({ userId: newUser.id }, SECRET_KEY, {
@@ -63,10 +59,8 @@ export const loginUser = async (req: Request, res: Response) => {
       .json({ message: "Username and password are required" });
   }
 
-  await dataSource.initialize();
   const userRepository = dataSource.getRepository(User);
   const user = await userRepository.findOne({ where: { username } });
-  await dataSource.destroy();
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
